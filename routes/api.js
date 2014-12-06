@@ -12,7 +12,8 @@ module.exports = function(app) {
   app.put('/employees/:id', employeesCtrl.put);
   app.delete('/employees/:id', employeesCtrl.deleteById);
 
-  
+  var homeCtrl = require('controllers/home');
+  app.get('/home', homeCtrl.get);
   // var auth = require('controllers/auth');
   // app.get('/auth/user', auth.checkLoggedIn, auth.getUserInfo);
   // app.post('/auth/user', auth.signup);

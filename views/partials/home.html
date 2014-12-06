@@ -1,0 +1,52 @@
+ <div class="container">
+    <div class="h2">Cooper Union Computer Center</div>
+    <div class="holder" ng-controller="homeCtrl">
+
+		<div id="nav">
+		Submit Work Query:<br><br>
+
+		<!-- button -->
+
+		</div>
+
+		<div id="section">
+		<h1>Welcome! <name> </h1>
+		<p>
+		You are an employee of the CUCC.  <br> <br>
+		</p>
+		<p>
+
+		Your info: <br>
+		lastname: {{lastname}}, firstname: {{firstname}}, DOB: {{dob}},<br>
+		email: {{email}}, phone {{phone}}
+		 <br> <br> <br>
+
+		Your Schedule: <br>
+		<ul>
+			<li ng-repeat="slot in schedule">
+				time: {{slot.time}}, day: {{slot.day}}
+			</li>
+		</ul>
+		 <br> <br> <br>
+
+		Your Hours worked: <br>
+		<ul>
+			<li ng-repeat="slot in payperiod">
+				time: {{slot.payperiod}}, hours: {{slot.hoursworked}},salary: {{slot.salary}}
+			</li>
+		</ul>
+		pay period: 
+		 <br> <br> <br>
+
+
+		</p>
+		</div>
+
+		<div id="footer">
+		Eugene Sokolov and Sheryan Resutov
+		</div>
+
+		<button ng-click="redirectToList()">go to list of employees</button>
+
+  </div>
+</div>
