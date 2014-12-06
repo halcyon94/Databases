@@ -11,18 +11,18 @@ function getAll(req, res, next) {
 }
 
 function getById(req, res, next) {
-  if (!req.body.hasOwnProperty('id')) {
+  if (!req.body.hasOwnProperty('eid')) {
     return next(new Error('no specified id!'));
   }
-  var id = parseInt(req.params.id, 10);
-  Employees.selectById(id, function(err, result) {
+  var eid = parseInt(req.params.eid, 10);
+  Employees.selectById(eid, function(err, result) {
     if (err) { return next(err); }
     res.json(result);
   });
 }
 
 function postEmployee(req, res, next) {
-  if (!req.body.hasOwnProperty('id') || 
+  if (!req.body.hasOwnProperty('eid') || 
       !req.body.hasOwnProperty('lastname') ||
       !req.body.hasOwnProperty('firstname') || 
       !req.body.hasOwnProperty('email') || 
@@ -31,7 +31,7 @@ function postEmployee(req, res, next) {
     return next(new Error('missing some fields'));
   }
   Employees.insert({
-    ID : req.body.id,
+    ID : req.body.eid,
     LastName: req.body.lastname,
     FirstName: req.body.firstname,
     Email: req.body.email,
@@ -43,7 +43,7 @@ function postEmployee(req, res, next) {
 }
 
 function putEmployee(req, res, next) {
-  if (!req.body.hasOwnProperty('id') || 
+  if (!req.body.hasOwnProperty('eid') || 
       !req.body.hasOwnProperty('lastname') ||
       !req.body.hasOwnProperty('firstname') || 
       !req.body.hasOwnProperty('email') || 
@@ -57,7 +57,7 @@ function putEmployee(req, res, next) {
     req.body.email,
     req.body.date,
     req.body.phone,
-    parseInt(req.params.id,10)
+    parseInt(req.params.eid,10)
   ];
   Employees.update(employee, function(err) {
     err ? next(err) : res.sendStatus(200);
@@ -65,11 +65,11 @@ function putEmployee(req, res, next) {
 }
 
 function deleteEmployee(req, res, next) {
-  if(!req.body.hasOwnProperty('id')) {
+  if(!req.body.hasOwnProperty('eid')) {
     return next(new Error('no specified id!'));
   }
-  var id = parseInt(req.params.id,10);
-  Employees.deleteById(id, function(err) {
+  var eid = parseInt(req.params.eid,10);
+  Employees.deleteById(eid, function(err) {
     err ? next(err) : res.send(200);
   });
 }

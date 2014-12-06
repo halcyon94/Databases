@@ -1,4 +1,5 @@
 'use strict';
+var multiline = require('multiline');
 var connection = require('config/db');
 var async = require('async');
 
@@ -45,8 +46,17 @@ function insert(employee, callback) {
   });
 }
 
-var getPayQuery = 'select h.eid, r.rate, h.hours, h.hours*r.rate as weeksalaray from (select s.eid, count(*) as hours from (select * from Schedule where day > '?' and day < '?') as s, (select * from HourLog where day > '?' and day < '?') as h where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, (select a.eid, a.rate from (select e.eid, p.rate from Employees e, WorksAs w, Position p where e.eid = w.eid AND w.pid = p.pid) as a) as r where h.eid = r.eid';
-function getPay(payperiod1, payperiod2, payperiod1, payperiod2, callback) {
+var getPayQuery = multiline(function() {/*
+ select h.eid, r.rate, h.hours, h.hours*r.rate 
+ as weeksalaray from 
+ (select s.eid, count(*) as hours from (select * from Schedule where day > '?' and day < '?') as s, 
+ (select * from HourLog where day > '?' and day < '?') as h 
+ where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, 
+ (select a.eid, a.rate from 
+ (select e.eid, p.rate from Employees e, WorksAs w, Position p where 
+ e.eid = w.eid AND w.pid = p.pid) as a) as r where h.eid = r.eid';
+*/});
+function getPay(payperiod1, payperiod2, callback) {
   async.waterfall(
   [
     function(callback) {

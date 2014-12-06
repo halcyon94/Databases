@@ -17,7 +17,7 @@ function selectAll(callback) {
  * @return {[type]}            [description]
  */
 function selectById(eid, callback) {
-  connection.query('SELECT * FROM HourLog WHERE eid = ?', [id], function(err, result) {
+  connection.query('SELECT * FROM HourLog WHERE eid = ?', [eid], function(err, result) {
     if (err) {return callback(err); }
     if (!result[0]) { return callback(new Error('No existing user')); }
     callback(null, result[0]);
@@ -46,7 +46,7 @@ function insert(eid, ipaddr, callback) {
   });
 }
 
-function delete(time,date, callback) {
+function deleteLog(time,date, callback) {
   connection.query('DELETE FROM HourLog WHERE time=? AND date=?', [time,date], function(err) {
     err ? callback(err) : callback(null);
   });
@@ -56,4 +56,4 @@ exports.selectAll = selectAll;
 exports.selectById = selectById;
 exports.selectByDay = selectByDay;
 exports.insert = insert;
-exports.delete = delete;
+exports.deleteLog = deleteLog;

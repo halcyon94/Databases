@@ -28,7 +28,7 @@ function selectById(eid, callback) {
  * [insert description]
  * @param  {object}   employee
  * employee object contains fields:
- * id, lastname, firstname, email, date, phone
+ * eid, lastname, firstname, email, date, phone
  * @param  {Function} callback [description]
  * args: err
  */
@@ -53,7 +53,7 @@ function deleteById(eid, callback) {
  * args: err
  */
 function update(employee, callback) {
-  connection.query('UPDATE Employee SET LastName = ?, FirstName = ?, Email = ?, DOB = ?, Phone = ? WHERE ID = ?', employee, function(err) {
+  connection.query('UPDATE Employee SET lastname = ?, firstname = ?, email = ?, dob = ?, phone = ? WHERE eid = ?', employee, function(err) {
     err ? callback(err) : callback(null);
   });
 }

@@ -32,7 +32,7 @@ function insert(login, password, eid, row_created_user, callback) {
   });
 }
 
-function delete(eid, callback) {
+function deleteSecurity(eid, callback) {
   connection.query('DELETE FROM Security WHERE eid=?', [eid], function(err) {
     err ? callback(err) : callback(null);
   });
@@ -47,5 +47,5 @@ function update(password, eid, callback) {
 exports.selectAll = selectAll;
 exports.selectById = selectById;
 exports.insert = insert;
-exports.delete = delete;
+exports.deleteSecurity = deleteSecurity;
 exports.update = update;

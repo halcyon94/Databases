@@ -26,7 +26,7 @@ function insert(day, time, eid, row_created_user, callback){
   });
 }
 
-function delete(day,time, callback) {
+function deleteSchedule(day,time, callback) {
   connection.query('DELETE FROM Schedule WHERE day=? AND time=?', [day, time], function(err) {
     err ? callback(err) : callback(null);
   });
@@ -34,4 +34,4 @@ function delete(day,time, callback) {
 
 exports.selectAll = selectAll;
 exports.insert = insert;
-exports.delete = delete;
+exports.deleteSchedule = deleteSchedule;

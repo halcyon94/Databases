@@ -32,7 +32,7 @@ function selectById(eid, callback) {
  * @param  {Function} callback [description]
  * args: err
  */
-function promote(eid, eid, pid, callback) {
+function promote(eid, pid, callback) {
   connection.query('update WorksAs set end = current_date() where id = (select id from WorksAs where eid = ? AND end = NULL) ; INSERT INTO WorksAs (eid, pid, start) values (?, ?, current_date() )', [eid, eid, pid], function(err) {
     err ? callback(err) : callback(null);
   });
