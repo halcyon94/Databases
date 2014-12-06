@@ -7,10 +7,10 @@ module.exports = function(app) {
   //==========
   var employeesCtrl = require('controllers/employees');
   app.get('/employees', employeesCtrl.getAll);
-  app.get('/employees/:id', employeesCtrl.getById);
   app.post('/employees', employeesCtrl.post);
-  app.put('/employees/:id', employeesCtrl.put);
-  app.delete('/employees/:id', employeesCtrl.deleteById);
+  app.get('/employees/:eid', employeesCtrl.getById);
+  app.put('/employees/:eid', employeesCtrl.put);
+  app.delete('/employees/:eid', function(req,res,next) {console.log(10); next();},employeesCtrl.deleteById);
 
   
   // var auth = require('controllers/auth');

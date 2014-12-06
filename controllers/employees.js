@@ -11,7 +11,7 @@ function getAll(req, res, next) {
 }
 
 function getById(req, res, next) {
-  if (!req.body.hasOwnProperty('eid')) {
+  if (!req.params.hasOwnProperty('eid')) {
     return next(new Error('no specified id!'));
   }
   var eid = parseInt(req.params.eid, 10);
@@ -22,8 +22,7 @@ function getById(req, res, next) {
 }
 
 function postEmployee(req, res, next) {
-  if (!req.body.hasOwnProperty('eid') || 
-      !req.body.hasOwnProperty('lastname') ||
+  if (!req.body.hasOwnProperty('lastname') ||
       !req.body.hasOwnProperty('firstname') || 
       !req.body.hasOwnProperty('email') || 
       !req.body.hasOwnProperty('date') || 
@@ -31,19 +30,19 @@ function postEmployee(req, res, next) {
     return next(new Error('missing some fields'));
   }
   Employees.insert({
-    ID : req.body.eid,
-    LastName: req.body.lastname,
-    FirstName: req.body.firstname,
-    Email: req.body.email,
-    DOB: req.body.date,
-    Phone: req.body.phone
-  }, function(err) {
-    err ? next(err) : res.sendStatus(200);
+    lastname: req.body.lastname,
+    firstname: req.body.firstname,
+    email: req.body.email,
+    dob: req.body.date,
+    phone: req.body.phone
+  }, function(err, eid) {
+    console.log(eid);
+    err ? next(err) : res.send(200, {eid: eid});
   });
 }
 
 function putEmployee(req, res, next) {
-  if (!req.body.hasOwnProperty('eid') || 
+  if (!req.params.hasOwnProperty('eid') || 
       !req.body.hasOwnProperty('lastname') ||
       !req.body.hasOwnProperty('firstname') || 
       !req.body.hasOwnProperty('email') || 
@@ -65,7 +64,8 @@ function putEmployee(req, res, next) {
 }
 
 function deleteEmployee(req, res, next) {
-  if(!req.body.hasOwnProperty('eid')) {
+  console.log(req.params);
+  if(!req.params.hasOwnProperty('eid')) {
     return next(new Error('no specified id!'));
   }
   var eid = parseInt(req.params.eid,10);

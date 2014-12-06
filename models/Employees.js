@@ -33,13 +33,13 @@ function selectById(eid, callback) {
  * args: err
  */
 function insert(employee, callback) {
-  connection.query('INSERT INTO Employee SET ?', employee, function(err) {
-    err ? callback(err) : callback(null);
+  connection.query('INSERT INTO Employees SET ?', employee, function(err, result) {
+    err ? callback(err) : callback(null, result.insertId);
   });
 }
 
 function deleteById(eid, callback) {
-  connection.query('DELETE FROM Employee WHERE eid=?', [eid], function(err) {
+  connection.query('DELETE FROM Employees WHERE eid=?', [eid], function(err) {
     err ? callback(err) : callback(null);
   });
 }
@@ -53,13 +53,14 @@ function deleteById(eid, callback) {
  * args: err
  */
 function update(employee, callback) {
-  connection.query('UPDATE Employee SET lastname = ?, firstname = ?, email = ?, dob = ?, phone = ? WHERE eid = ?', employee, function(err) {
+  console.log(employee);
+  connection.query('UPDATE Employees SET lastname = ?, firstname = ?, email = ?, dob = ?, phone = ? WHERE eid = ?', employee, function(err) {
     err ? callback(err) : callback(null);
   });
 }
 
 exports.selectAll = selectAll;
-exports.deleteById = deleteById;
+exports.selectById = selectById;
 exports.insert = insert;
 exports.deleteById = deleteById;
 exports.update = update;

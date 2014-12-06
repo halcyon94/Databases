@@ -81,7 +81,7 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
               phone: litem.phone.value
             };
         Employee.update(
-          { id: $scope.localObject.editItemNumber },
+          { eid: $scope.localObject.editItemNumber },
           record,
           function(val, resHdr) { //success
             angular.forEach($scope.updateItem, function(val, key) {
@@ -109,7 +109,7 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
     } else {
       //delete item;
       Employee.delete(
-        { id: item.eid },
+        { eid: item.eid },
         {},
         function(val, resHdr) { //success
           HelperService.RemoveItem($scope.items, item);
@@ -128,7 +128,6 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
       if (validation($scope.updateItem)) {
         var item = $scope.updateItem;
         var record = {
-              eid: parseInt(item.eid.value, 10),
               lastname: item.lastname.value,
               firstname: item.firstname.value,
               email: item.email.value,
@@ -137,8 +136,10 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
             };
         Employee.save(
           null,
-          {id: record.eid, lastname: record.lastname, firstname: record.firstname, email: record.email, phone: record.phone, date: record.dob},
-          function(val, resHdr) {  //success
+          {lastname: record.lastname, firstname: record.firstname, email: record.email, phone: record.phone, date: record.dob},
+          function(data) {  //success
+            console.log(data.eid);
+            record.eid = data.eid;
             $scope.items.push(record);
             //$notification.success('', "Insert success!");
           },

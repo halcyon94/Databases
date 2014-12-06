@@ -60,7 +60,7 @@ employee.factory("HelperService", function() {
 });
 
 employee.factory('Employee', ['$resource', function($resource) {
-  return $resource('/employees/:id', null,
+  return $resource('/employees/:eid', null,
   {
     'update': { method:'PUT' }
   });
