@@ -36,7 +36,6 @@ function postEmployee(req, res, next) {
     dob: req.body.date,
     phone: req.body.phone
   }, function(err, eid) {
-    console.log(eid);
     err ? next(err) : res.send(200, {eid: eid});
   });
 }
@@ -64,7 +63,6 @@ function putEmployee(req, res, next) {
 }
 
 function deleteEmployee(req, res, next) {
-  console.log(req.params);
   if(!req.params.hasOwnProperty('eid')) {
     return next(new Error('no specified id!'));
   }
