@@ -12,12 +12,12 @@ function selectAll(callback) {
 
 /**
  * [selectById description]
- * @param  {[type]}   id       [description]
+ * @param  {[type]}   eid       [description]
  * @param  {Function} callback [description]
  * @return {[type]}            [description]
  */
-function selectById(id, callback) {
-  connection.query('SELECT * FROM Employees WHERE id = ?', [id], function(err, result) {
+function selectById(eid, callback) {
+  connection.query('SELECT * FROM Employees WHERE eid = ?', [eid], function(err, result) {
     if (err) {return callback(err); }
     if (!result[0]) { return callback(new Error('No existing user')); }
     callback(null, result[0]);
@@ -38,8 +38,8 @@ function insert(employee, callback) {
   });
 }
 
-function deleteById(id, callback) {
-  connection.query('DELETE FROM Employee WHERE ID=?', [id], function(err) {
+function deleteById(eid, callback) {
+  connection.query('DELETE FROM Employee WHERE eid=?', [eid], function(err) {
     err ? callback(err) : callback(null);
   });
 }
@@ -59,7 +59,7 @@ function update(employee, callback) {
 }
 
 exports.selectAll = selectAll;
-exports.selectById = selectById;
+exports.deleteById = deleteById;
 exports.insert = insert;
 exports.deleteById = deleteById;
 exports.update = update;
