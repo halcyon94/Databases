@@ -1,0 +1,231 @@
+To add new Employee:
+You must first find the eid of “row_created_used” := tmp
+
+insert into Employees (lastname, firstname, dob, email, row_created_user, address1, city,state,zipcode, phone) values ('lastname', 'firstname', 'yyyy-mm-dd, 'email', 'row_created_user', 'address1', 'city' , 'state' , 'zipcode' , 'phone');
+
+var insertEmployeeQuery = multiline(function (){/*
+	insert into Employees (lastname, firstname, dob, email, row_created_user, address1, city,state,zipcode, phone)  values ( ?, ?, ?, ? , ?, ?, ?, ?, ?, ?);
+*/ } );
+
+function insertEmployee (lastname, firstname, dob, email, row_created_user, address1, city, state, zip, p
+phone){
+	connection.query(insertEmployeeQuery, 
+	[lastname, firstname, dob, email, row_created_user, address1, city, state, zip, phone ], 
+	function(err, result) {
+		err ? callback(err) : callback(null, result.insertId);
+	});
+}
+
+Modify Employee:
+update Employees set X=Y where eid = 'eid';
+
+var updateEmployeeQuery = multiline(function (){/*
+	update Employees set
+	phone = ?
+	where eid = ?;
+*/}):
+
+function createQueryString(colName) { return 'update Employees set ' + colName + ' = ? where eid = ?;' }
+
+/**
+ * @param  {object}   E
+ * the user object
+ * @param  {Function} callback [description]
+ */
+function updateEmployee(E, callback){
+	connection.query(createQueryString(E.attribute), [E.value, E.eid], callback);
+}
+
+Delete Employee:
+delete from Employees where eid = 'eid';
+
+var deleteEmployeeQuery = multiline(function() {/*
+	delete from Employee where eid = ?;
+*/});
+
+function deleteEmployee(eid, callback){
+	connection.query(deleteEmployeeQuery, [eid], callback);
+}
+
+View Employees:
+Select lastname, firstname, email, phone from Employees;
+
+var showEmployeesQuery = multiline(function() {/*
+	select lastname, firstname, email, phone from Employees where eid = ?;
+*/});
+
+function selectById(id, callback) {
+	connection.query(showEmployeesQuery, [eid], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+To add login and password for user:
+insert into Security (login, password, eid, row_created_user) values ('login', sha1('password'), eid, 'row_created_user');
+
+var insertEmployeeQuery = multiline(function (){/*
+	insert into Employees (lastname, firstname, dob, email, row_created_user, address1, city,state,zipcode, phone)  values ( ?, ?, ?, ? , ?, ?, ?, ?, ?, ?);
+*/ } );
+
+function insertEmployee (lastname, firstname, dob, email, row_created_user, address1, city, state, zip, p
+phone){
+	connection.query(insertEmployeeQuery, 
+	[lastname, firstname, dob, email, row_created_user, address1, city, state, zip, phone ], 
+	function(err, result) {
+		err ? callback(err) : callback(null, result.insertId);
+	});
+}
+
+Modify Employee password:
+update Security set password = sha1('X') where eid = 'eid';
+
+Promote an Employee:
+select * from WorksAs where eid = 'eid' AND end = NULL; // get this id
+update WorksAs set end = current_date() where id = 'id';
+insert into WorksAs (eid, pid, start) values ('eid', 'pid', current_date());
+
+Demote an Employee:
+select * from WorksAs where eid = 'eid' AND end = NULL; // get this id
+update WorksAs set end = current_date() where id = 'id';
+insert into WorksAs (eid, pid, start) values ('eid', 'pid', current_date());
+
+Create new Position:
+insert into Position (title, rate) values ('title', 'rate');
+
+var insertPositionQuery = multiline(function (){/*
+	insert into Position (title, rate) values (?, ?);
+*/ } );
+
+function insertPosition (title, rate){
+	connection.query(insertPositionQuery, [title, rate], 
+	function(err, result) {
+		err ? callback(err) : callback(null, result.insertId);
+	});
+}
+
+Modify a Position:
+update Position set X = Y where pid = 'pid';
+
+To add hour to a schedule:
+insert into Schedule (day, time, eid, row_created_user) values ('yyyy-mm-dd', 'hh:mm:ss', eid, 'row_created_user);
+
+var insertScheduleQuery = multiline(function (){/*
+	insert into Schedule (day, time, eid, row_created_user) values (?, ?, ?, ?);
+*/ } );
+
+function insertSchedule (day, time, eid, row_created_user){
+	connection.query(insertScheduleQuery, 
+	[ day, time, eid, row_created_user ], 
+	function(err, result) {
+		err ? callback(err) : callback(null, result.insertId);
+	});
+}
+
+Modify Schedule entry:
+update Schedule set X = Y where day = 'day' AND time = 'time';
+
+Delete Schedule entry:
+delete from Schedule where day = 'day' AND time = 'time';
+
+var deleteScheduleQuery = multiline(function() {/*
+	delete from Schedule where day = ? AND time = ?;
+*/});
+
+function deleteEmployee(day, time, callback){
+	connection.query(deleteScheduleQuery, [day, time], callback);
+}
+
+To submit a worked hour:
+You must first find the IP address of the system the user is logged on.
+
+Assert that the hour has not been worked by same employee:
+select * from HourLog where hour(time) = hour(current_time()) and eid = 'eid';
+
+var showHourLogQuery = multiline(function() {/*
+	select * from HourLog where hour(time) = hour(current_time()) and eid = ?;
+*/});
+
+function showHourLog(eid, callback) {
+	connection.query(showHourLogQuery, [eid], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+insert into HourLog values (current_date(), current_time(), 'eid', 'ipaddr');
+
+var LogHourQuery = multiline(function (){/*
+	insert into HourLog values (current_date(), current_time(), ?, ?);
+*/ } );
+
+function LogHour (eid, ipaddr){
+	connection.query(LogHourQuery, 
+	[eid, ipaddr], 
+	function(err, result) {
+		err ? callback(err) : callback(null, result.insertId);
+	});
+}
+
+To get Total Hours Worked in Pay Period:
+select s.eid, count(*) as hours from (select * from Schedule where day > 'period1' and day < 'period2') as s, (select * from HourLog where day > 'period1' and day < 'period2') as h where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid;
+
+var schedulePeriodQuery = multiline(function() {/*
+	select * from Schedule where day > ? and day < ?;
+*/});
+
+function schedulePeriod(period1, period2, callback) {
+	connection.query(schedulePeriodQuery, [period1, period2], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+var hourLogPeriodQuery = multiline(function() {/*
+	select * from HourLog where day > ? and day < ?;
+*/});
+
+function hourLogPeriod(period1, period2, callback) {
+	connection.query(hourLogPeriodQuery, [period1, period2], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+var totalHoursWorkQuery = multiline(function() {/*
+select s.eid, count(*) as hours from (scheduleQuery() ) as s, (hourLogQuery(period1, period2) ) as h where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid;
+*/});
+
+function totalHoursWork(period1, period2, callback) {
+	connection.query(totalHoursWorkQuery, [period1, period2], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+To get rate of Employee:
+select a.eid, a.rate from (select e.eid, p.rate from Employees e, WorksAs w, Position p where e.eid = w.eid AND w.pid = p.pid) as a;
+
+var eidPositionQuery = multiline(function() {/*
+	 select e.eid, p.rate from Employees e, WorksAs w, Position p where e.eid = w.eid AND w.pid = p.pid;
+*/});
+
+function eidPosition(callback) {
+	connection.query(eidPositionQuery, [ ], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+var employeeRateQuery = multiline(function() {/*
+	 select a.eid, a.rate from (eidPosition () ) as a;
+*/});
+
+function employeeRate(callback) {
+	connection.query(employeeRateQuery, [ ], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+To get weekly salary:
+select h.eid, r.rate, h.hours, h.hours*r.rate as weeksalaray from (select s.eid, count(*) as hours from (select * from Schedule where day > '2014-11-15' and day < '2014-11-20') as s, (select * from HourLog where day > '2014-11-15' and day < '2014-11-20') as h where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, (select a.eid, a.rate from (select e.eid, p.rate from Employees e, WorksAs w, Position p where e.eid = w.eid AND w.pid = p.pid) as a) as r where h.eid = r.eid
+
+var weeklyPayPeriodQuery = multiline(function() {/*
+	select h.eid, r.rate, h.hours, h.hours*r.rate as weeksalaray from (totalHoursWorkQuery(period1, period2) ) as h, (eidPosition() ) as r where h.eid = r.eid
+*/});
+
+function weeklyPayPeriod(callback) {
+	connection.query(weeklyPayPeriodQuery, [period1, period2 ], function(err, result) {
+	err ? callback(err) : callback(null, result[0]);
+  });
+
+
+
+*** Addition: covered for attribute
