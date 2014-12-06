@@ -10,8 +10,8 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
     email: 'string',
     dob: 'date',
     phone: 'string'
-  },
-  validation = function(item) {
+  };
+  var validation = function(item) {
     var isValid = true;
     angular.forEach(item, function(val, key) {
       /*if (!HelperService.Validate(fieldTypeMapping[key], val.value)) {
@@ -22,18 +22,20 @@ function dataGridCtrl($scope, SharedObject, HelperService, Employee) {
         item[key].isError = false;*/
     });
     return isValid;
-  },
-  trimDateWithTimezone = function(items){
+  };
+
+  var trimDateWithTimezone = function(items){
     //console.log(items[0]); //trim timezone, preserving date
     angular.forEach(items, function(ele, idx) {
-      var date = new Date(ele['dob']),
+      var date = new Date(ele.dob),
         month = date.getMonth()+1;
       month = ((month.toString().length===1) ? "0" : "")+month;
       ele['dob'] = date.getFullYear()+"-"+month+"-"+date.getDate();
     });
     return items;
-  },
-  refresh = function(item) {
+  };
+
+  var refresh = function(item) {
     Employee.query( null,
       function(items, resHdr) { //success
         $scope.items = trimDateWithTimezone(items);

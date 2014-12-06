@@ -8,8 +8,7 @@
     "angular-resource": "~1.2.0",
     "angular-sanitize": "~1.2.0",
     "angular-route": "~1.2.0",
-    "angular-http-auth": "*",
-    "angular-bootstrap": "~0.7.0"
+    "angular-http-auth": "*"
   },
   "devDependencies": {
   }

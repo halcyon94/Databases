@@ -6,13 +6,12 @@ var app = angular.module('yourApplicationName', [
   'ngSanitize',
   'ngRoute',
   'http-auth-interceptor',
-  'ui.bootstrap',
   'controllers.dataGrid'
 ]);
 
 function configApp($routeProvider, $locationProvider) {
   $routeProvider
-    .when('/employeesList', {
+    .when('/list', {
       templateUrl: 'partials/dataGrid.html',
       controller: 'dataGridCtrl'
     })
