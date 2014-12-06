@@ -2,11 +2,11 @@ var express = require('express');
 var mysql   = require('mysql');
 var app = express();
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'recognitio',
-  database : 'testing'
-});
+    host: '199.98.20.114',
+    user: 'root',
+    password: 'toor',
+    database: 'managementsystem'
+  });
 //--------------------
 //app.use(express.bodyParser()); //use if file-upload needed. else below 2 are enough. //POST works with form-data
 app.use(express.json());

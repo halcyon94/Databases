@@ -1,7 +1,7 @@
 {
-  "name": "DB Project",
+  "name": "TestOne",
   "version": "0.0.0",
-  "description": "npm dependencies",
+  "description": "CrudGrid npm dependencies",
   "main": "app.js",
   "dependencies": {
     "express": "~3.4.8",
@@ -11,5 +11,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Eugene Sokolov and Sheryan Resutov",
+  "author": "seh",
+  "license": "ISC"
 }
