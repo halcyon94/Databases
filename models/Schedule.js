@@ -10,6 +10,13 @@ function selectAll(callback) {
   connection.query('SELECT * from Schedule', callback);
 }
 
+function selectById(eid, callback) {
+  connection.query('SELECT * from Schedule where eid=?', [eid], function(err, result) { 
+    if (err) {return callback(err); }
+    if (!result[0]) { return callback(new Error('No existing user')); }
+    callback(null, result[0]);
+  });
+}
 /**
  * [insert description]
  * @param  {object}   schedule
@@ -33,5 +40,6 @@ function deleteSchedule(day,time, callback) {
 }
 
 exports.selectAll = selectAll;
+exports.selectById = selectById;
 exports.insert = insert;
 exports.deleteSchedule = deleteSchedule;

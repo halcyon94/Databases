@@ -15,6 +15,10 @@ function configApp($routeProvider, $locationProvider) {
       templateUrl: 'partials/dataGrid.html',
       controller: 'dataGridCtrl'
     })
+    .when('/home', {
+      templateUrl: 'partials/home.html',
+      controller: 'homeCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });
