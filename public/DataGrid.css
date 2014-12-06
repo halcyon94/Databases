@@ -1,0 +1,26 @@
+/*DataGrid.css*/
+/*.mainTable{ border: 1px solid blue; width: 85%;}*/
+.glyphicon{cursor: pointer;}
+body{background-color:#2E221D;}
+html, body, .container{ height:100%; }
+.h2{ padding:50px 10px 10px; background-color:#DBB98F; height:15%;}
+.table-striped > tbody > tr:nth-child(2n+1) > td
+{
+    background-color: #7D3127;
+    color:white;
+    border-width: 0px;
+}
+.table .table>thead, .table .table>tfoot
+{
+	background-color: #967A71;
+	color:white;
+}
+.table{ width: 95%; margin-right: auto; margin-left: auto; margin-bottom: 0px; }
+.table .table{ width: 100%; }
+.clsTable > tbody > tr:nth-child(2n) > td { padding: 8px 0px; background-color:#7D3127; border-width: 0px;}
+
+.holder{ margin-top:8px; padding-top:50px; background-color:#DBB98F; min-height:83%; max-height:98%; }
+.clsPageCount{margin-left: 15px; padding-left: 15px; border-left: 1px solid #888888; display: inline;}
+.error{ border:2px solid red; }
+.activeSort{color: #7D3127; cursor: default;}
+.disablePage{color: #aaaaaa; cursor: default;}

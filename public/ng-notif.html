@@ -1,0 +1,36 @@
+   <!doctype html>
+    <html ng-app="spicyApp1">
+    <head>
+	<link rel="stylesheet" type="text/css" href="notification.css"/>
+	<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.css"/>
+    <script src="angular.js"></script>
+	<script src="notification.js"></script>
+    <script>
+	var myApp = angular.module('spicyApp1',['notifications']);
+
+    myApp.controller('SpicyCtrl', ['$scope', '$notification', function($scope, $notification){
+
+    $scope.spice = 'very';
+    $scope.chiliSpicy = function() {
+    $scope.spice = 'chili';
+	$notification.error('title', $scope.spice); //, userData
+	$notification.success('title', $scope.spice);
+    };
+    $scope.jalapenoSpicy = function() {
+    $scope.spice = 'jalapeño';
+	$notification.info('', 'some extra content to fill for testing only.');
+	$notification.warning('', 'some extra content to fill for testing only.');
+    };
+    }]);
+	</script>
+    </head>
+    <body>
+    <div ng-controller="SpicyCtrl">
+    <button ng-click="chiliSpicy()">Chili</button>
+    <button ng-click="jalapenoSpicy()">Jalapeño</button>
+    <p>The food is {{spice}} spicy!</p>
+	{{ $scope.items }}
+    </div>
+	<div notifications="bottom right"></div>
+    </body>
+    </html>

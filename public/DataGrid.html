@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<link rel="stylesheet" type="text/css" href="static/dist/css/bootstrap.css"/>
+<!--	<link rel="stylesheet" type="text/css" href="static/notification.css"/>-->
+	<link rel="stylesheet" type="text/css" href="static/DataGrid.css"/>
+	<script src="static/angular.js"></script>
+	<script src="static/angular-resource.js"></script>
+<!--	<script src="static/notification.js"></script>-->
+	<script src="static/employee.js"></script>
+	 <script src="static/DataGrid.js"></script>
+	<meta charset="utf-8" />
+	<title>Data Grid</title>
+</head>
+<body>
+	<div class="container">
+		<div class="h2">Cooper Union Computer Center</div>
+		<div class="holder" ng-controller="appCtrl">
+			<table class="clsTable table table-striped">
+				<tr>
+				<td>
+				<b>Employees</b>
+				</td>
+				<td align="right">
+					<select ng-model="searchProp" ng-change="search={}">
+							<option value="ID">Employee ID</option>
+							<option value="DOB">DOB</option>
+							<option value="LastName">Last Name</option>
+							<option value="FirstName">First Name</option>
+							<option value="Phone">Phone</option>
+							<option value="Email">Email</option>
+						</select>
+						<input ng-model="search[searchProp]" ng-change="localObject.reset()" />
+						<span title="search" class="glyphicon glyphicon-search"></span>
+				</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<table class="table table-bordered table-condensed">
+						<thead>
+						    <tr>
+						      <th> <table width="100%"><tr><td rowspan="2">Employee ID</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='ID')}" ng-click="sort='ID'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-ID')}" ng-click="sort='-ID'" title="descending"></span></td></tr></table> </th>
+						      <th> <table width="100%"><tr><td rowspan="2">DOB</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='DOB')}" ng-click="sort='DOB'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-DOB')}" ng-click="sort='-DOB'" title="descending"></span></td></tr></table> </th>
+						      <th> <table width="100%"><tr><td rowspan="2">Last Name</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='LastName')}" ng-click="sort='LastName'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-LastName')}" ng-click="sort='-LastName'" title="descending"></span></td></tr></table> </th>
+						      <th> <table width="100%"><tr><td rowspan="2">First Name</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='FirstName')}" ng-click="sort='FirstName'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-FirstName')}" ng-click="sort='-FirstName'" title="descending"></span></td></tr></table> </th>
+						      <th> <table width="100%"><tr><td rowspan="2">Phone</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='Phone')}" ng-click="sort='Phone'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-Phone')}" ng-click="sort='-Phone'" title="descending"></span></td></tr></table> </th>
+						      <th> <table width="100%"><tr><td rowspan="2">Email</td>
+						      <td align="right"><span class="glyphicon glyphicon-chevron-up small ng-class:{'activeSort':(sort==='Email')}" ng-click="sort='Email'" title="ascending"></span></td></tr>
+						      <tr><td align="right"><span class="glyphicon glyphicon-chevron-down small ng-class:{'activeSort':(sort==='-Email')}" ng-click="sort='-Email'" title="descending"></span></td></tr></table> </th>
+						      <th colspan="2"></th>
+						    </tr>
+						</thead>
+						<tfoot>
+						    <tr ng-show="localObject.insertMode">
+						      <td>
+						      <input ng-model="updateItem.ID.value" ng-class="{error:updateItem.ID.isError}" title="{{updateItem.ID.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      <input ng-model="updateItem.DOB.value" ng-class="{error:updateItem.DOB.isError}" title="{{updateItem.DOB.isError ? 'invalid data' : 'yyyy-mm-dd'}}" placeholder="yyyy-mm-dd" />
+						      </td>
+						      <td>
+						      <input ng-model="updateItem.LastName.value" ng-class="{error:updateItem.LastName.isError}" title="{{updateItem.LastName.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      <input ng-model="updateItem.FirstName.value" ng-class="{error:updateItem.FirstName.isError}" title="{{updateItem.FirstName.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      <input ng-model="updateItem.Phone.value" ng-class="{error:updateItem.Phone.isError}" title="{{updateItem.Phone.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      <input ng-model="updateItem.Email.value" ng-class="{error:updateItem.Email.isError}" title="{{updateItem.Email.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      	<span title="save new" class="glyphicon glyphicon-floppy-disk" ng-show="localObject.insertMode" ng-click="InsertRecord()"></span>
+						      </td>
+						      <td>
+						      	<span title="cancel new" class="glyphicon glyphicon-ban-circle" ng-show="localObject.insertMode" ng-click="updateItem={};localObject.insertMode=false"></span>
+						      </td>
+						    </tr>
+						</tfoot>
+						<tbody>
+							<tr ng-repeat="item in items | filter: search | orderBy:sort | paging:pageSize">
+							  <td>{{item.ID}}</td>
+						      <td>
+						      	<span ng-if="localObject.editItemNumber!==item.ID">{{item.DOB | date:'dd/MMM/yyyy'}}</span>
+								<input ng-if="localObject.editItemNumber===item.ID" ng-model="$parent.updateItem.DOB.value" ng-class="{error:$parent.updateItem.DOB.isError}" title="{{$parent.updateItem.DOB.isError ? 'invalid data' : 'yyyy-mm-dd'}}" placeholder="yyyy-mm-dd" />
+						      </td>
+						      <td>
+					      		<span ng-if="localObject.editItemNumber!==item.ID">{{item.LastName}}</span>
+								<input ng-if="localObject.editItemNumber===item.ID" ng-model="$parent.updateItem.LastName.value" ng-class="{error:$parent.updateItem.LastName.isError}" title="{{$parent.updateItem.LastName.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+					      		<span ng-if="localObject.editItemNumber!==item.ID">{{item.FirstName}}</span>
+								<input ng-if="localObject.editItemNumber===item.ID" ng-model="$parent.updateItem.FirstName.value" ng-class="{error:$parent.updateItem.FirstName.isError}" title="{{$parent.updateItem.FirstName.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      	<span ng-if="localObject.editItemNumber!==item.ID">{{item.Phone}}</span>
+								<input ng-if="localObject.editItemNumber===item.ID" ng-model="$parent.updateItem.Phone.value" ng-class="{error:$parent.updateItem.Phone.isError}" title="{{$parent.updateItem.Phone.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+								<span ng-if="localObject.editItemNumber!==item.ID">{{item.Email}}</span>
+								<input ng-if="localObject.editItemNumber===item.ID" ng-model="$parent.updateItem.Email.value" ng-class="{error:$parent.updateItem.Email.isError}" title="{{$parent.updateItem.Email.isError ? 'invalid data' : ''}}" />
+						      </td>
+						      <td>
+						      	<span class="glyphicon ng-class:{'glyphicon-pencil':(localObject.editItemNumber!==item.ID), 'glyphicon-ok':(localObject.editItemNumber===item.ID)}" ng-click="$parent.EditUpdate(item)" title="{{(localObject.editItemNumber===item.ID) ? 'update' : 'edit'}}"></span>
+						      </td>
+						      <td>
+						      	<span class="glyphicon ng-class:{'glyphicon-remove':(localObject.editItemNumber!==item.ID), 'glyphicon-ban-circle':(localObject.editItemNumber===item.ID)}" ng-click="$parent.CancelDelete(item)" title="{{(localObject.editItemNumber===item.ID) ? 'cancel' : 'delete'}}"></span>
+						      </td>
+							</tr>
+						</tbody>
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td><span title="insert new" class="glyphicon glyphicon-plus" ng-click="InsertRecord()" ng-hide="localObject.insertMode"></span></td>
+				<td align="right">
+					<span>
+						 Page Size:
+						<select ng-model="pageSize" ng-change="localObject.reset()">
+							<option>2</option>
+							<option>5</option>
+							<option>10</option>
+							<option>20</option>
+						</select>
+					</span>
+					<span class="clsPageCount">
+						<span ng-click="NavPrev()" class="glyphicon glyphicon-chevron-left ng-class:{'disablePage':(localObject.pageNum<=1)}" title="previous"></span>
+						{{ localObject.pageNum }}
+						<span ng-click="NavNext()" class="glyphicon glyphicon-chevron-right ng-class:{'disablePage':(localObject.pageNum>=TotalPages())}" title="next"></span>
+					</span>
+					<span class="clsPageCount">{{ TotalPages() }} pages / {{ localObject.recordsCount }} records</span>
+				</td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+<!--	<div notifications="top right"></div>-->
+</body>
+</html>

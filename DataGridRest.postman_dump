@@ -1,0 +1,171 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "c202bf04-d963-ddb5-2271-010781f5b74c",
+			"name": "ProductRest",
+			"description": "Testing restful webapp containing mysql db access.\nData mainly pertaining to products.\nnode file: WebSqlRest.js",
+			"order": [
+				"c0f782f2-bf10-6de6-5192-56cf0080e0bc",
+				"b995834b-8db9-d093-81c5-fa0bd621524e",
+				"055a3d8b-f203-1503-4a54-acf1d5864c75",
+				"d32f1985-4c5d-815b-8e68-65cd438b3cc3",
+				"5aa43b53-3f81-58aa-48c0-d3570c585674",
+				"82a65cb3-8591-de09-88bd-9f4ff23d91c5"
+			],
+			"folders": [],
+			"timestamp": 1389974376281,
+			"synced": false,
+			"remote_id": 0,
+			"requests": [
+				{
+					"id": "055a3d8b-f203-1503-4a54-acf1d5864c75",
+					"headers": "Content-Type: application/x-www-form-urlencoded\n",
+					"url": "http://localhost:8800/products",
+					"pathVariables": {},
+					"method": "POST",
+					"data": [
+						{
+							"key": "id",
+							"value": "10015",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Lenovo pad",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "800",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2013-04-21",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "1",
+							"type": "text"
+						}
+					],
+					"dataMode": "urlencoded",
+					"version": 2,
+					"tests": "",
+					"time": 1390318108807,
+					"name": "Insert new product (post - urlEncode)",
+					"description": "data will be sent as url querystrings instead of form-data.",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c",
+					"responses": []
+				},
+				{
+					"id": "5aa43b53-3f81-58aa-48c0-d3570c585674",
+					"headers": "",
+					"url": "http://localhost:8800/products/10015",
+					"pathVariables": {},
+					"method": "DELETE",
+					"data": [],
+					"dataMode": "urlencoded",
+					"version": 2,
+					"tests": "",
+					"time": 1390318529950,
+					"name": "Delete a product (delete - urlEncode)",
+					"description": "deletes a product by its id",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c",
+					"responses": []
+				},
+				{
+					"id": "82a65cb3-8591-de09-88bd-9f4ff23d91c5",
+					"headers": "",
+					"url": "http://localhost:8800/product.html",
+					"pathVariables": {},
+					"method": "GET",
+					"data": [],
+					"dataMode": "params",
+					"version": 2,
+					"tests": "",
+					"time": 1390229722094,
+					"name": "DataGrid.html",
+					"description": "get html file.",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c",
+					"responses": []
+				},
+				{
+					"id": "b995834b-8db9-d093-81c5-fa0bd621524e",
+					"headers": "",
+					"url": "http://localhost:8800/products/10011",
+					"pathVariables": {},
+					"method": "GET",
+					"data": [],
+					"dataMode": "params",
+					"version": 2,
+					"tests": "",
+					"time": 1390316576258,
+					"name": "get a product by ID",
+					"description": "",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c",
+					"responses": []
+				},
+				{
+					"id": "c0f782f2-bf10-6de6-5192-56cf0080e0bc",
+					"headers": "",
+					"url": "http://localhost:8800/products",
+					"pathVariables": {},
+					"method": "GET",
+					"data": [],
+					"dataMode": "params",
+					"name": "get all products (json)",
+					"description": "",
+					"descriptionFormat": "html",
+					"time": 1389974450153,
+					"version": 2,
+					"responses": [],
+					"tests": "",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c"
+				},
+				{
+					"id": "d32f1985-4c5d-815b-8e68-65cd438b3cc3",
+					"headers": "Content-Type: application/x-www-form-urlencoded\n",
+					"url": "http://localhost:8800/products/10015",
+					"pathVariables": {},
+					"method": "PUT",
+					"data": [
+						{
+							"key": "name",
+							"value": "LG G1",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "2400",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "2011-05-31",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "4",
+							"type": "text"
+						}
+					],
+					"dataMode": "urlencoded",
+					"version": 2,
+					"tests": "",
+					"time": 1390318282471,
+					"name": "Edit existing product (put - urlEncode)",
+					"description": "data will be sent as url querystrings instead of form-data.",
+					"collectionId": "c202bf04-d963-ddb5-2271-010781f5b74c",
+					"responses": []
+				}
+			]
+		}
+	],
+	"environments": [],
+	"headerPresets": [],
+	"globals": []
+}
