@@ -1,5 +1,6 @@
 'use strict';
-var connection = require('config/db');
+var async = require('async');
+var connection = require('../config/db');
 
 /**
  * [selectAll description]
@@ -19,11 +20,16 @@ function selectAll(callback) {
 function selectById(eid, callback) {
   connection.query('SELECT * FROM WorksAs WHERE eid = ?', [eid], function(err, result) {
     if (err) {return callback(err); }
-    if (!result[0]) { return callback(new Error('No existing user')); }
+    if (!result[0]) { return callback(new Error('No existing position')); }
     callback(null, result[0]);
   });
 }
 
+function insert(eid, pid, callback) {
+  connection.query('INSERT INTO WorksAs (eid, pid, start) values (?, ?, current_date() );', [eid, pid], function(err) {
+    callback(err);
+  });
+}
 /**
  * [insert description]
  * @param  {object}   WorkAs
@@ -33,12 +39,23 @@ function selectById(eid, callback) {
  * args: err
  */
 function promote(eid, pid, callback) {
-  connection.query('update WorksAs set end = current_date() where id = (select id from WorksAs where eid = ? AND end = NULL) ; INSERT INTO WorksAs (eid, pid, start) values (?, ?, current_date() )', [eid, eid, pid], function(err) {
+  async.parallel(
+  [
+    function(callback) {
+      insert(eid, pid, callback);
+    },
+    function(callback) {
+      connection.query('update WorksAs set end = current_date() where eid = (select eid from WorksAs where eid = ? AND end = NULL) ;', [eid], function(err) {
+        err ? callback(err) : callback(null);
+      });
+    }
+  ],
+  function(err) {
     err ? callback(err) : callback(null);
   });
 }
 
-
 exports.selectAll = selectAll;
 exports.selectById = selectById;
 exports.promote = promote;
+exports.insert = insert;

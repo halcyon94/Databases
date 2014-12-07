@@ -32,7 +32,7 @@ function selectById(pid, callback) {
    });
 }
 
-function getLowestLevel(callback) {
+function getLowestLevelPid(callback) {
   connection.query('select pid, min(rate) as rate from Position; ', [], function(err, result) {
     err || !result[0] ? callback(err) : callback(null, result[0].pid);
   });
@@ -69,3 +69,5 @@ exports.insert = insert;
 exports.deleteByTitle = deleteByTitle;
 exports.deleteByPid = deleteByPid;
 exports.update = update;
+exports.getLowestLevelPid = getLowestLevelPid;
+exports.selectById = selectById;

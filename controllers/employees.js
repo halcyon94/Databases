@@ -1,7 +1,10 @@
 'use strict';
 (require('rootpath')());
 
+var async = require('async');
 var Employees = require('models/Employees');
+var Security = require('models/Security');
+var WorksAs = require('models/WorksAs');
 
 function getAll(req, res, next) {
   Employees.selectAll(function(err, results) {
@@ -29,15 +32,33 @@ function postEmployee(req, res, next) {
       !req.body.hasOwnProperty('phone')) {
     return next(new Error('missing some fields'));
   }
-  Employees.insert({
-    lastname: req.body.lastname,
-    firstname: req.body.firstname,
-    email: req.body.email,
-    dob: req.body.date,
-    phone: req.body.phone
-  }, function(err, eid) {
-    err ? next(err) : res.send(200, {eid: eid});
+  var eid;
+  async.waterfall(
+  [
+    function(callback) {
+      Employees.insert({
+        lastname: req.body.lastname,
+        firstname: req.body.firstname,
+        email: req.body.email,
+        dob: req.body.date,
+        phone: req.body.phone
+      }, function(err, retEid) {
+        if (err) { return callback(err); }
+        eid = retEid;
+        callback(null);
+      });
+    },
+    function(callback) {
+      WorksAs.insert(eid, 1, callback); //default level of position is 1
+    },
+    function(callback) {
+      Security.insert(req.body.lastname+eid, req.body.lastname, eid, callback);
+    }
+  ],
+  function(err) {
+    err ? next(err) : res.send(200, eid);
   });
+ 
 }
 
 function putEmployee(req, res, next) {
@@ -68,7 +89,7 @@ function deleteEmployee(req, res, next) {
   }
   var eid = parseInt(req.params.eid,10);
   Employees.deleteById(eid, function(err) {
-    err ? next(err) : res.send(200);
+    err ? next(err) : res.sendStatus(200);
   });
 }
 

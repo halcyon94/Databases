@@ -1,20 +1,18 @@
 'use strict';
 
-var login = angular.module('controllers.login', ['services.auth']);
+var login = angular.module('controllers.login', []);
 
-function loginCtrl($scope, $location, Auth) {
+function loginCtrl($scope, $location, $http) {
   $scope.login = function() {
-    Auth.login({
-      email: $scope.user.email,
+    $http.post({
+      login: $scope.user.login,
       password: $scope.user.password
-    },
-    function(err) {
-      if (err) {
-        $scope.error = err;
-      } else {
-        $location.path('/');
-      }
-
+    })
+    .success(function() {
+      $location.path('/home')
+    })
+    .error(function(err) {
+      $scope.error = err.data;
     });
   };
   
@@ -24,5 +22,5 @@ function loginCtrl($scope, $location, Auth) {
 login.controller('LoginCtrl', [
   '$scope',
   '$location',
-  'Auth',
+  '$http',
   loginCtrl]);

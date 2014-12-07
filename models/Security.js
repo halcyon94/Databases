@@ -13,6 +13,13 @@ function selectAll(callback) {
 function selectById(eid, callback) {
   connection.query('SELECT * FROM Security WHERE eid = ?', [eid], function(err, result) {
     if (err) {return callback(err); }
+    callback(null, result[0]);
+  });
+}
+
+function selectByLogin(login, password, callback) {
+  connection.query('SELECT * FROM Security WHERE login = ? and password = sha1(?)', [login, password], function(err, result) {
+    if (err) {return callback(err); }
     if (!result[0]) { return callback(new Error('No existing user')); }
     callback(null, result[0]);
   });
@@ -26,11 +33,18 @@ function selectById(eid, callback) {
  * @param  {Function} callback [description]
  * args: err
  */
-function insert(login, password, eid, row_created_user, callback) {
+function insert(login, password, eid, callback) {
+  connection.query('insert into Security (login, password, eid) values (?, sha1(?), ?)', [login, password, eid], function(err) {
+    err ? callback(err) : callback(null);
+  });
+}
+
+function insert1(login, password, eid, row_created_user, callback) {
   connection.query('insert into Security (login, password, eid, row_created_user) values (?, sha1(?), ?, ?)', [login, password, eid, row_created_user], function(err) {
     err ? callback(err) : callback(null);
   });
 }
+
 
 function deleteSecurity(eid, callback) {
   connection.query('DELETE FROM Security WHERE eid=?', [eid], function(err) {
@@ -46,6 +60,8 @@ function update(password, eid, callback) {
 
 exports.selectAll = selectAll;
 exports.selectById = selectById;
+exports.selectByLogin = selectByLogin;
 exports.insert = insert;
+exports.insert1 = insert1;
 exports.deleteSecurity = deleteSecurity;
 exports.update = update;
