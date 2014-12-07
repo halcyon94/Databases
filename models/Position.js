@@ -24,6 +24,20 @@ function insert(title, rate, row_created_user, callback) {
   });
 }
 
+function selectById(pid, callback) {
+  connection.query('SELECT * FROM Position WHERE pid = ?', [pid], function(err, result) {
+   if (err) {return callback(err); }
+    if (!result[0]) { return callback(new Error('No existing user')); }
+    callback(null, result[0]);
+   });
+}
+
+function getLowestLevel(callback) {
+  connection.query('select pid, min(rate) as rate from Position; ', [], function(err, result) {
+    err || !result[0] ? callback(err) : callback(null, result[0].pid);
+  });
+}
+
 function deleteByTitle(title, callback) {
   connection.query('DELETE FROM Position WHERE title=?', [title], function(err) {
     err ? callback(err) : callback(null);
