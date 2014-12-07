@@ -14,6 +14,12 @@ module.exports = function(app) {
 
   var homeCtrl = require('controllers/home');
   app.get('/home', homeCtrl.get);
+
+  var calCtrl = require('controllers/calendar');
+  app.get('/calendar',calCtrl.getAllHours);
+  app.post('/calendar', calCtrl.insertHour);
+  app.delete('/calendar/:eid/:time/:date', calCtrl.deleteHour);
+  app.put('/calendar/:eid/:time/:date', calCtrl.updateHour);
   // var auth = require('controllers/auth');
   // app.get('/auth/user', auth.checkLoggedIn, auth.getUserInfo);
   // app.post('/auth/user', auth.signup);
