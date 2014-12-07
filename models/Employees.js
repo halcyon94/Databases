@@ -33,7 +33,7 @@ function selectById(eid, callback) {
  * args: err
  */
 function insert(employee, callback) {
-  connection.query('INSERT INTO Employees SET ?', employee, function(err, result) {
+  connection.query('INSERT INTO Employees SET ?; insert into Security (login, passsword, eid) values (concat(substring(employee.lastname,1,6), NEW.eid), sha1(employeelastname), employee.eid); insert into WorksAs (eid, pid, start) values (employee.eid, 1, current_date()', employee, function(err, result) {
     err ? callback(err) : callback(null, result.insertId);
   });
 }
