@@ -6,7 +6,8 @@ var app = angular.module('yourApplicationName', [
   'ngSanitize',
   'ngRoute',
   'http-auth-interceptor',
-  'controllers.dataGrid'
+  'controllers.dataGrid',
+  'controllers.home'
 ]);
 
 function configApp($routeProvider, $locationProvider) {
@@ -14,6 +15,10 @@ function configApp($routeProvider, $locationProvider) {
     .when('/list', {
       templateUrl: 'partials/dataGrid.html',
       controller: 'dataGridCtrl'
+    })
+    .when('/login', {
+      templateUrl: 'partials/login.html',
+      controller: 'loginCtrl'
     })
     .when('/home', {
       templateUrl: 'partials/home.html',
@@ -31,21 +36,26 @@ app.config([
   configApp
 ]);
 
-app.run(function ($rootScope, $location) {
+app.run(function ($rootScope, $location, $http) {
   //watching the value of the currentUser variable.
-  /*$rootScope.$watch('currentUser', function(currentUser) {
+  $rootScope.$watch('currentUser', function(currentUser) {
     // if no currentUser and on a page that requires authorization 
     // then try to update it
     // will trigger http 401 if user does not have a valid session
     if (!currentUser && 
       (['/','/login','/logout'].indexOf($location.path()) === -1)) {
-      Auth.currentUser();
+      $http.get('/user')
+        .success(function(user) {
+          $rootScope.currentUser = user;
+        });
     }
   });
 
   // On catching 401 errors, redirect to the login page.
   $rootScope.$on('event:auth-loginRequired', function() {
-    $location.path('/login');
+    if (!$rootScope.currentUser) {
+      $location.path('/login');
+    }
     return false;
-  });*/
+  });
 });

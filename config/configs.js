@@ -18,7 +18,7 @@ var settings = require('./settings/exports');
 var connection = require('./db');
 
 //setup passport configuration
-//require('./passport')(passport);
+require('./passport')(passport);
 
 //exported configurations
 var config = {
@@ -43,11 +43,11 @@ var config = {
       store: new SessionStore(settings.secrets.mysqlConfigs)
     }));
     app.use(flash());
-    //app.use(passport.initialize());
-    //app.use(passport.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
   },
   mysql: connection,
-  //passport: passport,
+  passport: passport,
   settings: settings
 }
 

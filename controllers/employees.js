@@ -56,7 +56,7 @@ function postEmployee(req, res, next) {
     }
   ],
   function(err) {
-    err ? next(err) : res.send(200, eid);
+    err ? next(err) : res.send({eid: eid});
   });
  
 }

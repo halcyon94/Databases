@@ -34,6 +34,7 @@ function localLoginVerifyCallback(login, password, done) {
       Position.selectById(pid, function(err, pos) {
         if (err) { return callback(err); }
         user.title = pos.title;
+        user.rate = pos.rate;
         callback(null, user);
       });
     }
@@ -54,7 +55,7 @@ module.exports = function(passport) {
   passport.deserializeUser(function(eid, done) {
     async.waterfall(
     [
-      function(eid, callback) {
+      function(callback) {
         Employees.selectById(eid, function(err, result) {
           if (err) { return callback(err); }
           callback(null, result);
@@ -70,6 +71,7 @@ module.exports = function(passport) {
         Position.selectById(pid, function(err, pos) {
           if (err) { return callback(err); }
           user.title = pos.title;
+          user.rate = pos.rate;
           callback(null, user);
         });
       }

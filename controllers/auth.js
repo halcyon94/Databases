@@ -33,6 +33,7 @@ exports.logout = function(req, res) {
 }
 
 exports.login = function(req, res, next) {
+  console.log('hello');
   passport.authenticate('local-login', function(err, user, info) {
     var error = err || info;
     if (error) { return next(error); }
@@ -45,6 +46,10 @@ exports.login = function(req, res, next) {
 
 exports.getUserInfo = function(req, res) {
   res.send({
-    email: req.user.email
+    phone: req.user.phone,
+    firstname: req.user.firstname,
+    lastname: req.user.lastname,
+    email: req.user.email,
+    title: req.user.title
   });
 }

@@ -33,7 +33,7 @@ function selectById(eid, callback) {
  * args: err
  */
 function insert(employee, callback) {
-  connection.query('INSERT INTO Employees SET ?', employee, function(err, result) {
+  connection.query('INSERT INTO Employees SET ?;', employee, function(err, result) {
     err ? callback(err) : callback(null, result.insertId);
   });
 }
