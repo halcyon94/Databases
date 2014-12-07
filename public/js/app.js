@@ -7,7 +7,8 @@ var app = angular.module('yourApplicationName', [
   'ngRoute',
   'http-auth-interceptor',
   'controllers.dataGrid',
-  'controllers.home'
+  'controllers.home',
+  'controllers.calendar'
 ]);
 
 function configApp($routeProvider, $locationProvider) {
@@ -23,6 +24,10 @@ function configApp($routeProvider, $locationProvider) {
     .when('/home', {
       templateUrl: 'partials/home.html',
       controller: 'homeCtrl'
+    })
+    .when('/calendar', {
+      templateUrl: 'partials/calendar.html',
+      controller: 'calCtrl'
     })
     .otherwise({
       redirectTo: '/'

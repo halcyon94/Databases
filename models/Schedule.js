@@ -9,7 +9,7 @@ var connection = require('config/db');
 function selectAll(callback) {
   connection.query('SELECT * from Schedule', callback);
 }
-
+/*
 function selectById(eid, callback) {
   connection.query('SELECT * from Schedule where eid=?', [eid], function(err, result) { 
     if (err) {return callback(err); }
@@ -26,20 +26,27 @@ function selectById(eid, callback) {
  * args: err
  */
 
-function insert(day, time, eid, row_created_user, callback){
-  connection.query('insert into Schedule (day, time, eid, row_created_user) values (?, ?, ?, ?)', 
+function insert(day, time, eid, callback){
+  connection.query('insert into Schedule (day, time, eid) values (?, ?, ?)', 
    [ day, time, eid, row_created_user ], function(err, result) { 
     err ? callback(err) : callback(null, result.insertId);
   });
 }
 
+function update(day, time, eid, callback) {
+  console.log(hour);
+  connection.query('UPDATE Schedule SET day = ?, time = ? WHERE eid = ?', hour, function(err) {
+    err ? callback(err) : callback(null);
+  });
+}
+
 function deleteSchedule(day,time, callback) {
-  connection.query('DELETE FROM Schedule WHERE day=? AND time=?', [day, time], function(err) {
+  connection.query('DELETE FROM Schedule WHERE day=? AND time=? AND eid=?', [day, time, eid], function(err) {
     err ? callback(err) : callback(null);
   });
 }
 
 exports.selectAll = selectAll;
-exports.selectById = selectById;
 exports.insert = insert;
+exports.update = update;
 exports.deleteSchedule = deleteSchedule;
