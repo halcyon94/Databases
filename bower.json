@@ -11,8 +11,10 @@
     "angular-http-auth": "*",
     "angular-ui-calendar": "latest",
     "jquery-ui": "latest",
-    "angular-bootstrap": "latest"
+    "angular-bootstrap": "latest",
+    "fullcalendar": "2.1.1",
+    "moment": "2.*",
+    "angular-bootstrap-datetimepicker": "latest"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

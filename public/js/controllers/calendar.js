@@ -1,17 +1,11 @@
-var app = angular.module('controllers.calendar', ['ui.calendar','ui.bootstrap']);
+var app = angular.module('controllers.calendar', ['ui.calendar', 'ui.bootstrap']);
 
-function calCtrl($scope) {
-
+function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
-    var y = date.getFullYear();    
-
-    $scope.eventSource = {
-            url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
-            className: 'gcal-event',           // an option!
-            currentTimezone: 'America/Chicago' // an option!
-    };
+    var y = date.getFullYear();
+    
     /* event source that contains custom events on the scope */
     $scope.events = [
       {title: 'All Day Event',start: new Date(y, m, 1)},
@@ -30,15 +24,7 @@ function calCtrl($scope) {
       callback(events);
     };
 
-    $scope.calEventsExt = {
-       color: '#f00',
-       textColor: 'yellow',
-       events: [ 
-          {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-          {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-          {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-        ]
-    };
+    
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
         $scope.alertMessage = (date.title + ' was clicked ');
@@ -109,6 +95,8 @@ function calCtrl($scope) {
         eventRender: $scope.eventRender
       }
     };
+    /* event sources array*/
+    $scope.eventSources = [$scope.events, $scope.eventsF];
 }
 
-app.controller("calCtrl", ["$scope", calCtrl]);
+app.controller("calCtrl", ["$scope", "$compile","$http", "uiCalendarConfig", calCtrl]);
