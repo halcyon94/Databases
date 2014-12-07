@@ -3,6 +3,9 @@
 var login = angular.module('controllers.login', []);
 
 function loginCtrl($scope, $location, $http, $rootScope) {
+  if ($rootScope.currentUser) {
+    $location.path('/myhome');
+  }
   $scope.login = function() {
     $http.post('/user', {
       login: $scope.user.login,
@@ -10,7 +13,7 @@ function loginCtrl($scope, $location, $http, $rootScope) {
     })
     .success(function(user) {
       $rootScope.currentUser = user; 
-      $location.path('/home');
+      $location.path('/myhome');
     })
     .error(function(err) {
       $scope.error = err.data;

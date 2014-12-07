@@ -4,7 +4,7 @@ var app = angular.module('controllers.home', []); //access existing module
 function homeCtrl($scope, $http, $location) {
   $scope.payperiod = [];
   $scope.schedule = [];
-  $scope.employee = [];
+  $scope.employee = {};
   $http.get('/home')
     .success(function(data) {
       $scope.employee = data.employee;

@@ -18,7 +18,7 @@ function get(req, res, next) {
   //results[0] is the schedule and results[1] is the payearned object
   function(err, results) {
     err ? next(err) : res.send({
-      employees: req.user,
+      employee: req.user,
       schedule: results[0],
       payperiod: results[1]
     });

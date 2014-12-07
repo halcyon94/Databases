@@ -21,11 +21,11 @@ function configApp($routeProvider, $locationProvider) {
       templateUrl: 'partials/login.html',
       controller: 'loginCtrl'
     })
-    .when('/home', {
+    .when('/myhome', {
       templateUrl: 'partials/home.html',
       controller: 'homeCtrl'
     })
-    .when('/calendar', {
+    .when('/mycalendar', {
       templateUrl: 'partials/calendar.html',
       controller: 'calCtrl'
     })
