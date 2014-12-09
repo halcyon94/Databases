@@ -1,27 +1,28 @@
 var app = angular.module('controllers.calendar', ['ui.calendar', 'ui.bootstrap']);
 
 function calCtrl($scope,$compile,$http,uiCalendarConfig) {
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-    
-    /* event source that contains custom events on the scope */
-    $scope.events = [
-      {title: 'All Day Event',start: new Date(y, m, 1)},
-      {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-      {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-    ];
-    /* event source that calls a function on every view switch */
-    $scope.eventsF = function (start, end, timezone, callback) {
-      var s = new Date(start).getTime() / 1000;
-      var e = new Date(end).getTime() / 1000;
-      var m = new Date(start).getMonth();
-      var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-      callback(events);
+
+    $scope.events = [];
+    $scope.eventsF = function () {
+      $http.get('/calendar')
+      .success(function(data) {
+      for(var i=0;i<data.length;i++){
+        var res = (data[i].day).substring(0,10);
+        var date = new Date(res);
+        month = date.getMonth();
+        year = date.getFullYear();
+        day = date.getDate();
+        hour = data[i].time.substring(0,2);
+        hourtwo = parseInt(hour) +1;
+        console.log(hour);
+        console.log(hourtwo);
+        $scope.events[i] = {title: data[i].eid,
+                            start: new Date(year,month,day,hour,00), 
+                            end:   new Date(year,month,day,hourtwo.toString(),00)
+                          };
+      }
+      console.log($scope.events);
+    });
     };
 
     
@@ -96,7 +97,8 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
       }
     };
     /* event sources array*/
-    $scope.eventSources = [$scope.events, $scope.eventsF];
+    $scope.eventSources = [$scope.eventsF, $scope.events];
+    console.log($scope.events);
 }
 
 app.controller("calCtrl", ["$scope", "$compile","$http", "uiCalendarConfig", calCtrl]);
