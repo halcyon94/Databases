@@ -85,16 +85,16 @@ from (select s.eid, count(*) as hours from (select * from Schedule where month(d
 where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, 
 (select a.eid, a.rate from 
 (select e.eid, p.rate from Employees e, WorksAs w, Position p 
-where e.eid = w.eid AND w.pid = p.pid AND w.end IS NULL) as a) as r where h.eid = r.eid;
+where e.eid = w.eid AND w.pid = p.pid AND w.end IS NULL) as a) as r where h.eid = r.eid AND h.eid = ?;
 */});
 
 function getPay2(callback) {
   async.waterfall(
   [
-    function(callback) {
+    function(eid, callback) {
       connection.query(
         getPayQuery2,
-        [],
+        [eid],
         function(err, results) {
           if (err) {return callback(err); }
           callback(results);
