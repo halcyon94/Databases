@@ -78,7 +78,40 @@ function getPay(payperiod1, payperiod2, callback) {
 
 }
 
+var getPayQuery2 = multiline(function() {/*
+select h.eid, r.rate, h.hours, h.hours*r.rate as weeksalaray 
+from (select s.eid, count(*) as hours from (select * from Schedule where month(day) = month(current_date()) ) as s, 
+(select * from HourLog where month(day) = month(current_date()) ) as h 
+where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, 
+(select a.eid, a.rate from 
+(select e.eid, p.rate from Employees e, WorksAs w, Position p 
+where e.eid = w.eid AND w.pid = p.pid AND w.end IS NULL) as a) as r where h.eid = r.eid AND h.eid = ?;
+*/});
+
+function getPay2(callback) {
+  async.waterfall(
+  [
+    function(eid, callback) {
+      connection.query(
+        getPayQuery2,
+        [eid],
+        function(err, results) {
+          if (err) {return callback(err); }
+          callback(results);
+        });
+    },
+    function(employees, callback) {
+      async.each(employees, insert, callback);
+    }
+  ],
+  function(err) {
+    err ? callback(err) : callback(null);
+  });
+
+}
+
 exports.selectAll = selectAll;
 exports.selectById = selectById;
 exports.getPay = getPay;
+exports.getPay2 = getPay2;
 exports.insert = insert;
