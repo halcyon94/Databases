@@ -1,5 +1,5 @@
 //manager.js
-var app = angular.module('controllers.home', []); //access existing module
+var app = angular.module('controllers.manager', []); //access existing module
 
 function managerCtrl($scope, $http, $location) {
   $scope.payperiod = [];

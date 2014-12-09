@@ -52,6 +52,9 @@ app.run(function ($rootScope, $location, $http) {
       $http.get('/user')
         .success(function(user) {
           $rootScope.currentUser = user;
+        })
+        .error(function() {
+          $rootScope.currentUser = null;
         });
     }
   });

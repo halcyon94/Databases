@@ -1,12 +1,18 @@
 var app = angular.module('controllers.calendar', ['ui.calendar', 'ui.bootstrap']);
 
 function calCtrl($scope,$compile,$http,uiCalendarConfig) {
-
+    $scope.name = [];
+    console.log($scope.title);
+    console.log($scope.started);
     $scope.events = [];
     $scope.eventsF = function () {
       $http.get('/calendar')
       .success(function(data) {
       for(var i=0;i<data.length;i++){
+          console.log(data.employees);
+          console.log(data.listOfSched);
+
+      /*
         var res = (data[i].day).substring(0,10);
         var date = new Date(res);
         month = date.getMonth();
@@ -14,15 +20,19 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
         day = date.getDate();
         hour = data[i].time.substring(0,2);
         hourtwo = parseInt(hour) +1;
-        console.log(hour);
-        console.log(hourtwo);
-        $scope.events[i] = {title: data[i].eid,
+
+            $scope.name[i] = dat.lastname +" "+ dat.firstname;
+            console.log($scope.name[i]);
+            $scope.events[i] = {title: $scope.name[i],
                             start: new Date(year,month,day,hour,00), 
                             end:   new Date(year,month,day,hourtwo.toString(),00)
-                          };
-      }
-      console.log($scope.events);
-    });
+                          };*/
+
+          }
+        
+        
+      });
+      //console.log($scope.events);
     };
 
     
@@ -53,12 +63,28 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     };
     /* add custom event*/
     $scope.addEvent = function() {
+
+      var time = new Date($scope.year,$scope.month-1,$scope.day,$scope.hour,00);
+      endhour2 = parseInt($scope.hour) +1;
+      var endtime = new Date($scope.year,$scope.month-1,$scope.day,endhour2.toString(),00);
+      console.log(time);
+      console.log(endtime);
       $scope.events.push({
-        title: 'Open Sesame',
-        start: new Date(y, m, 28),
-        end: new Date(y, m, 29),
-        className: ['openSesame']
+        title: $scope.title,
+        start: time,
+        end:   endtime
       });
+      $http.post('/calendar', {
+        eid: $scope.eid,
+        time: $scope.hour,
+        day: $scope.year+ "-"+($scope.month)+"-"+$scope.day,
+      }).success(function(data) {
+
+      });
+//      $http.post('/calendar/' +$scope.eid+ '/'+ $scope.hour+'/' + $scope.year+'-'+$scope.month + '-' + $scope.day)
+  //      .success();
+
+      
     };
     /* remove event */
     $scope.remove = function(index) {

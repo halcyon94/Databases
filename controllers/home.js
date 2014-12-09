@@ -29,12 +29,12 @@ function get(req, res, next) {
     function(callback) {
       Schedule.selectById(req.user.eid, callback);
     },
-//    function(callback) {
-//      PayEarned.selectById(req.user.eid, callback);
-//    }
     function(callback) {
-      PayEarned.getPay2(req.user.eid, callback);
+      PayEarned.selectById(req.user.eid, callback);
     }
+   /* function(callback) {
+      PayEarned.getPay2(req.user.eid, callback);
+    }*/
   ],
   //results[0] is the schedule and results[1] is the payearned object
   function(err, results) {
