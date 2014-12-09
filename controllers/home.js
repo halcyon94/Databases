@@ -28,9 +28,9 @@ function get(req, res, next) {
     function(callback) {
       Schedule.selectById(req.user.eid, callback);
     },
-    function(callback) {
-      PayEarned.selectById(req.user.eid, callback);
-    }
+//    function(callback) {
+//      PayEarned.selectById(req.user.eid, callback);
+//    }
     function(callback) {
       PayEarned.getPay2(req.user.eid, callback);
     }
