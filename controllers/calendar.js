@@ -6,64 +6,54 @@ var Schedule = require('models/Schedule');
 var Employees = require('models/Employees');
 
 function getAllHours(req, res, next) {
-  async.waterfall(
+  async.parallel(
   [
     function(callback) {
-      Schedule.selectAll(callback);
+      Employees.selectAll(function(err, result) {
+        result = result.map(function(employeee) {
+          return {
+            eid: employeee.eid,
+            firstname: employeee.firstname,
+            lastname: employeee.lastname
+          };
+        });
+        callback(err, result);
+      });
     },
-    function(listOfSched, callback) {
-      async.map(listOfSched, function(sched, callback) {
-        Employees.selectById(sched.eid, callback);
-      }, function(err, employees) {
-        callback(err, listOfSched, employees);
+    function(callback) {
+      Schedule.selectAll(function(err, result) {
+        callback(err, result);
       });
     }
   ],
-  function(err, listOfSched, employees) {
+  function(err, results) {
     err ? next(err) : res.send({
-      listOfSched: listOfSched,
-      employees: employees
+      employee: results[0],
+      listOfSched: results[1]
     });
-    console.log(listOfSched);
-    console.log(employees);
-  });
-  Schedule.selectAll(function(err, results) {
-    if (err) { return next(err); }
-    res.json(results);
   });
 }
 
 function insertHour(req, res, next) {
+  var eid = parseInt(req.body.eid);
   if (!req.body.hasOwnProperty('day') ||
       !req.body.hasOwnProperty('time') || 
-      !req.body.hasOwnProperty('eid')) {
+      (eid !== 0 && !eid)) {
     return next(new Error('missing some fields'));
   }
-  console.log("HI!")
-  console.log(req.body.day);
-  console.log(req.body.time);
-  console.log(req.body.eid);
-  Schedule.insert({
-    day: req.body.day,
-    time: req.body.time,
-    eid: req.body.eid
-  }, function(err, eid) {
-    err ? next(err) : res.send(200, {eid: eid});
+  Schedule.insert(req.body.day, req.body.time, eid, function(err, eid) {
+    err ? next(err) : res.sendStatus(200);
   });
 }
 
 function updateHour(req, res, next) {
+  var eid = parseInt(req.body.eid);
   if (!req.body.hasOwnProperty('day') ||
       !req.body.hasOwnProperty('time') || 
-      !req.body.hasOwnProperty('eid')) {
+      (eid !== 0 && !eid)) {
     return next(new Error('missing some fields'));
   }
-  var hour = [
-    req.body.day,
-    req.body.time,
-    req.body.eid,
-  ];
-  Schedule.update(hour, function(err) {
+  Schedule.update(req.body.day, req.body.time, eid, function(err) {
     err ? next(err) : res.sendStatus(200);
   });
 }

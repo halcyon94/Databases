@@ -21,23 +21,23 @@ function selectById(eid, callback) {
 
 /**
  * [insert description]
- * @param  {object}   schedule
- * schedule object contains fields:
+ * @param  {object}   hour
+ * hour is an array containing fields:
  * day, time, employee id
  * @param  {Function} callback [description]
  * args: err
  */
 
 function insert(day, time, eid, callback){
-  connection.query('insert into Schedule (day, time, eid) values (?, ?, ?)', 
-   [ day, time, eid, row_created_user ], function(err, result) { 
+  connection.query('insert into Schedule (day, time, eid) values (?, ?, ?);', 
+   [day, time, eid], function(err, result) { 
     err ? callback(err) : callback(null, result.insertId);
   });
 }
 
 //hour is an array of 3 containing day, time, eid in order
-function update(hour, callback) {
-  connection.query('UPDATE Schedule SET day = ?, time = ? WHERE eid = ?', hour, function(err) {
+function update(day, time, eid, callback) {
+  connection.query('UPDATE Schedule SET day = ?, time = ? WHERE eid = ?', [day, time, eid], function(err) {
     err ? callback(err) : callback(null);
   });
 }

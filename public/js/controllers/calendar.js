@@ -8,9 +8,18 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     $scope.eventsF = function () {
       $http.get('/calendar')
       .success(function(data) {
-      for(var i=0;i<data.length;i++){
-          console.log(data.employees);
-          console.log(data.listOfSched);
+        console.log(data);
+        eidHash = {};
+        for (var i = 0; i < data.employees.length; ++i) {
+          eidHash[data.employees[i].eid] = data.employees[i];
+          eidHash[data.employees[i].eid].schedule = []; //initialize sched field
+        }
+        for (var i = 0; i < data.listOfSched.length; ++i) {
+          eidHash[data.listOfSched[i].eid].schedule.push(data.listOfSched[i]);
+        }
+      //for(var i=0;i<data.length;i++){
+          //console.log(data.employees);
+          //console.log(data.listOfSched);
 
       /*
         var res = (data[i].day).substring(0,10);
@@ -28,7 +37,7 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
                             end:   new Date(year,month,day,hourtwo.toString(),00)
                           };*/
 
-          }
+          //}
         
         
       });
@@ -78,7 +87,7 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
         eid: $scope.eid,
         time: $scope.hour,
         day: $scope.year+ "-"+($scope.month)+"-"+$scope.day,
-      }).success(function(data) {
+      }).success(function() {
 
       });
 //      $http.post('/calendar/' +$scope.eid+ '/'+ $scope.hour+'/' + $scope.year+'-'+$scope.month + '-' + $scope.day)
