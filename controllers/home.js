@@ -7,10 +7,12 @@ var PayEarned = require('models/PayEarned');
 var HourLog = require('models/HourLog');
 
 function submitWorkHour(req, res, next){
-  
-    function(callback) {
+  async.parallel(
+    [
+    function(callback){
       HourLog.insert(req.user.eid, request.connection.remoteAddress, callback);
     }
+    ],
   //results[0] is the schedule and results[1] is the payearned object
   function(err, results) {
     err ? next(err) : res.send({
@@ -19,7 +21,6 @@ function submitWorkHour(req, res, next){
       payperiod: results[1]
     });
   });
-
 }
 
 function get(req, res, next) {
