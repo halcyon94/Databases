@@ -54,7 +54,7 @@ var getPayQuery = multiline(function() {/*
  where hour(s.time) = hour(h.time) AND s.eid = h.eid group by s.eid) as h, 
  (select a.eid, a.rate from 
  (select e.eid, p.rate from Employees e, WorksAs w, Position p where 
- e.eid = w.eid AND w.pid = p.pid) as a) as r where h.eid = r.eid';
+ e.eid = w.eid AND w.pid = p.pid and w.end IS NULL) as a) as r where h.eid = r.eid';
 */});
 function getPay(payperiod1, payperiod2, callback) {
   async.waterfall(

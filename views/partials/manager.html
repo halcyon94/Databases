@@ -1,0 +1,38 @@
+ <div class="container">
+    <div class="h2">PAYMENT</div>
+    <div class="holder" ng-controller="managerCtrl">
+
+		<div id="section">
+		<h1>Pay Employees: <name> </h1>
+		<p>
+		To create Pay Sheet: Submit below.. <br> <br>
+
+ <form action="demo_form.asp">
+  Start period: <input type="text" name="payperiod1"><br>
+  End period: <input type="text" name="payperiod2"><br>
+  <input ng-click="calculatePay()" type="submit" value="Submit">
+</form> 
+
+		
+		
+		<p>
+<br><br>
+		Processing... <br>
+		 <br> <br>
+<!-- DISPLAY RESULTS HERE -->
+
+
+		 <br> <br> <br>
+
+
+		</p>
+		</div>
+
+		<div id="footer">
+		Eugene Sokolov and Sheryan Resutov
+		</div>
+
+		<button ng-click="redirectToList()">go to list of employees</button>
+
+  </div>
+</div>
