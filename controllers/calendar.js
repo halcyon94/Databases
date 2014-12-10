@@ -36,6 +36,9 @@ function getAllHours(req, res, next) {
 
 function insertHour(req, res, next) {
   var eid = parseInt(req.body.eid);
+  console.log(req.body.eid);
+  console.log(req.body.day);
+  console.log(req.body.time);
   if (!req.body.hasOwnProperty('day') ||
       !req.body.hasOwnProperty('time') || 
       (eid !== 0 && !eid)) {
@@ -59,12 +62,17 @@ function updateHour(req, res, next) {
 }
 
 function deleteHour(req, res, next) {
-  if(!req.params.hasOwnProperty('eid')) {
-    return next(new Error('no specified id!'));
+  var eid = parseInt(req.body.eid);
+  console.log(req.body.eid);
+  console.log(req.body.day);
+  console.log(req.body.time);
+  if (!req.body.hasOwnProperty('day') ||
+      !req.body.hasOwnProperty('time') || 
+      (eid !== 0 && !eid)) {
+    return next(new Error('missing some fields'));
   }
-  var eid = parseInt(req.params.eid,10);
-  Schedule.deleteById(eid, function(err) {
-    err ? next(err) : res.send(200);
+  Schedule.deleteSchedule(req.body.day,req.body.time, eid, function(err) {
+    err ? next(err) : res.sendStatus(200);
   });
 }
 exports.getAllHours = getAllHours;

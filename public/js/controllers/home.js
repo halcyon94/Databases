@@ -8,15 +8,26 @@ function homeCtrl($scope, $http, $location, $rootScope) {
   $scope.payperiod = [];
   $scope.schedule = [];
   $scope.employee = {};
+  $scope.hours = [];
   $http.get('/home')
     .success(function(data) {
       $scope.employee = data.employee;
       $scope.payperiod = data.payperiod;
       $scope.schedule = data.schedule;
+      $scope.hours = data.hours;
+      console.log($scope.payperiod);
+      console.log($scope.hours);
+      //$scope.payearned = data.payearned;
     })
     .error(function(data) {
       console.log(data.data);
     });
+  $scope.submitWorkHour = function() {
+  $http.post('/home')
+    .success(function(){
+      console.log("successful button click");
+  });
+  }
   $scope.redirectToList = function() {
     $location.path('/list');
   }

@@ -27,11 +27,13 @@ module.exports = function(app) {
 
   var homeCtrl = require('controllers/home');
   app.get('/home', auth.checkOperator, homeCtrl.get);
+  app.get('/homehours',homeCtrl.show);
+  app.post('/home',auth.checkOperator,homeCtrl.submitWorkHour);
 
   var calCtrl = require('controllers/calendar');
   app.get('/calendar',calCtrl.getAllHours);
   app.post('/calendar', calCtrl.insertHour);
-  app.delete('/calendar/:eid/:time/:day', calCtrl.deleteHour);
+  app.delete('/calendar', calCtrl.deleteHour);
   app.put('/calendar/:eid/:time/:day', calCtrl.updateHour);
 
 

@@ -19,8 +19,8 @@ function selectAll(callback) {
 function selectById(eid, callback) {
   connection.query('SELECT * FROM HourLog WHERE eid = ?', [eid], function(err, result) {
     if (err) {return callback(err); }
-    if (!result[0]) { return callback(new Error('No existing user')); }
-    callback(null, result[0]);
+    if (!result) { return callback(new Error('No existing user')); }
+    callback(null, result);
   });
 }
 

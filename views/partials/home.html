@@ -33,17 +33,19 @@
 		</ul>
 		 <br> <br> <br>
 
-		Your Hours worked: <br>
+
+		Hours Worked:  <br>
+		 <ul>
+		 	<li ng-repeat="slot in hours">
+		 		time: {{slot.time}}, day: {{slot.day}}
+		</ul>
+
+		Your Pay Earned: <br>
 		<ul>
 			<li ng-repeat="slot in payperiod">
 				time: {{slot.payperiod}}, hours: {{slot.hoursworked}},salary: {{slot.salary}}
 			</li>
 		</ul>
-		pay period: 
-		 <br> <br> <br>
-
-
-		</p>
 		</div>
 
 		<div id="footer">

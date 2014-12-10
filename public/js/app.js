@@ -30,7 +30,7 @@ function configApp($routeProvider, $locationProvider) {
       controller: 'calCtrl'
     })
     .otherwise({
-      redirectTo: '/'
+      redirectTo: '/login'
     });
   $locationProvider.html5Mode(true);
 }

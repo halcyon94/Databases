@@ -1,61 +1,45 @@
-var app = angular.module('controllers.calendar', ['ui.calendar', 'ui.bootstrap']);
+var app = angular.module('controllers.calendar', [/*'services.Hourserv',*/'ui.calendar', 'ui.bootstrap']);
 
 function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     $scope.name = [];
-    console.log($scope.title);
-    console.log($scope.started);
     $scope.events = [];
     $scope.eventsF = function () {
       $http.get('/calendar')
       .success(function(data) {
-        console.log(data);
-        eidHash = {};
-        for (var i = 0; i < data.employees.length; ++i) {
-          eidHash[data.employees[i].eid] = data.employees[i];
-          eidHash[data.employees[i].eid].schedule = []; //initialize sched field
+             
+        for(var i=0;i<data.listOfSched.length;i++){
+          var res = (data.listOfSched[i].day).substring(0,10);
+          var date = new Date(res);
+          month = date.getMonth();
+          year = date.getFullYear();
+          day = date.getDate()+1;
+          hour = data.listOfSched[i].time.substring(0,2);
+          hourtwo = parseInt(hour) +1;
+          for(var j=0;j<data.employee.length;j++){
+            if(data.employee[j].eid == data.listOfSched[i].eid)
+              $scope.name[i] = data.employee[j].eid +" "+ data.employee[j].lastname +" "+ data.employee[j].firstname;
+          }
+          $scope.events[i] = {title: $scope.name[i],
+                              start: new Date(year,month,day,hour), 
+                              end:   new Date(year,month,day,hourtwo.toString())
+                            };
         }
-        for (var i = 0; i < data.listOfSched.length; ++i) {
-          eidHash[data.listOfSched[i].eid].schedule.push(data.listOfSched[i]);
-        }
-      //for(var i=0;i<data.length;i++){
-          //console.log(data.employees);
-          //console.log(data.listOfSched);
-
-      /*
-        var res = (data[i].day).substring(0,10);
-        var date = new Date(res);
-        month = date.getMonth();
-        year = date.getFullYear();
-        day = date.getDate();
-        hour = data[i].time.substring(0,2);
-        hourtwo = parseInt(hour) +1;
-
-            $scope.name[i] = dat.lastname +" "+ dat.firstname;
-            console.log($scope.name[i]);
-            $scope.events[i] = {title: $scope.name[i],
-                            start: new Date(year,month,day,hour,00), 
-                            end:   new Date(year,month,day,hourtwo.toString(),00)
-                          };*/
-
-          //}
-        
-        
       });
-      //console.log($scope.events);
     };
 
     
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
-        $scope.alertMessage = (date.title + ' was clicked ');
-    };
-    /* alert on Drop */
-     $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
-       $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
-    };
-    /* alert on Resize */
-    $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view ){
-       $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
+        $scope.alertMessage = (date.title + ' was clicked. starts on '+new Date(date.start));
+        var res = date.title.split(" ",3);
+        $scope.eid = res[0];
+        $scope.title = res[1]+" "+res[2];
+        var date_r = new Date(date.start);
+        $scope.month = date_r.getMonth()+1;
+        $scope.year = date_r.getFullYear();
+        $scope.day = date_r.getDate();
+        $scope.hour = date_r.getHours();
+
     };
     /* add and removes an event source of choice */
     $scope.addRemoveEventSource = function(sources,source) {
@@ -73,21 +57,20 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     /* add custom event*/
     $scope.addEvent = function() {
 
-      var time = new Date($scope.year,$scope.month-1,$scope.day,$scope.hour,00);
+      var time = new Date($scope.year,$scope.month-1,$scope.day,$scope.hour);
       endhour2 = parseInt($scope.hour) +1;
-      var endtime = new Date($scope.year,$scope.month-1,$scope.day,endhour2.toString(),00);
-      console.log(time);
-      console.log(endtime);
-      $scope.events.push({
-        title: $scope.title,
-        start: time,
-        end:   endtime
-      });
+      var endtime = new Date($scope.year,$scope.month-1,$scope.day,endhour2.toString());
       $http.post('/calendar', {
         eid: $scope.eid,
-        time: $scope.hour,
-        day: $scope.year+ "-"+($scope.month)+"-"+$scope.day,
+        time: ($scope.hour).toString()+":00:00",
+        day: $scope.year+ "-"+($scope.month)+"-"+(parseInt($scope.day)).toString()
       }).success(function() {
+        
+          $scope.events.push({
+        title: $scope.eid+" "+$scope.title,
+        start: time,
+        end:   endtime
+        });
 
       });
 //      $http.post('/calendar/' +$scope.eid+ '/'+ $scope.hour+'/' + $scope.year+'-'+$scope.month + '-' + $scope.day)
@@ -96,8 +79,39 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
       
     };
     /* remove event */
-    $scope.remove = function(index) {
-      $scope.events.splice(index,1);
+    $scope.remove = function() {
+      //$scope.events.splice(index,1);
+      var time = new Date($scope.year,$scope.month,$scope.day,$scope.hour);
+      endhour2 = parseInt($scope.hour) +1;
+      var endtime = new Date($scope.year,$scope.month,$scope.day,endhour2.toString());
+
+      console.log($scope.eid);
+      console.log(($scope.hour).toString()+":00:00");
+      console.log($scope.year+ "-"+($scope.month)+"-"+($scope.day+1));
+
+      $http.delete('/calendar', {
+        eid: $scope.eid,
+        time: ($scope.hour).toString()+":00:00",
+        day: $scope.year+ "-"+($scope.month)+"-"+($scope.day+1)
+      }).success(function() {
+        console.log("successful delete");
+        });
+     /*   Hourserv.delete({ 
+          eid: $scope.eid,
+          time: ($scope.hour).toString()+":00:00",
+          day: $scope.year+ "-"+($scope.month)+"-"+($scope.day+1)
+          },
+          {},
+          function(val, resHdr) { //success
+            console.log("success");
+          //$notification.success('', "Delete success!");
+          },
+          function(httpRes) { //error
+          console.log("error");
+          //$notification.error('Delete Failed', msg);
+          }
+        );*/
+
     };
     /* Change View */
     $scope.changeView = function(view,calendar) {
@@ -118,7 +132,8 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 450,
+        height: 800,
+        width:800,
         editable: true,
         header:{
           left: 'title',
@@ -126,14 +141,11 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
           right: 'today prev,next'
         },
         eventClick: $scope.alertOnEventClick,
-        eventDrop: $scope.alertOnDrop,
-        eventResize: $scope.alertOnResize,
         eventRender: $scope.eventRender
       }
     };
     /* event sources array*/
     $scope.eventSources = [$scope.eventsF, $scope.events];
-    console.log($scope.events);
 }
 
-app.controller("calCtrl", ["$scope", "$compile","$http", "uiCalendarConfig", calCtrl]);
+app.controller("calCtrl", ["$scope", "$compile","$http","uiCalendarConfig", calCtrl]);

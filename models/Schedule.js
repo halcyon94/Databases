@@ -29,8 +29,7 @@ function selectById(eid, callback) {
  */
 
 function insert(day, time, eid, callback){
-  connection.query('insert into Schedule (day, time, eid) values (?, ?, ?);', 
-   [day, time, eid], function(err, result) { 
+  connection.query('insert into Schedule (day, time, eid) values (?, ?, ?);', [day, time, eid], function(err, result) { 
     err ? callback(err) : callback(null, result.insertId);
   });
 }
@@ -42,9 +41,9 @@ function update(day, time, eid, callback) {
   });
 }
 
-function deleteSchedule(day,time, callback) {
-  connection.query('DELETE FROM Schedule WHERE day=? AND time=? AND eid=?', [day, time, eid], function(err) {
-    err ? callback(err) : callback(null);
+function deleteSchedule(day,time, eid, callback) {
+  connection.query('DELETE FROM Schedule (day, time, eid) values (?, ?, ?);', [day, time, eid], function(err, result) {
+    err ? callback(err) : callback(null,result.insertId);
   });
 }
 

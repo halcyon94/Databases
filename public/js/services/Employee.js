@@ -1,4 +1,3 @@
-//product.js
 var employee = angular.module('services.employee', ['ngResource']);
 
 //--------------------
