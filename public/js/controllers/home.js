@@ -9,6 +9,7 @@ function homeCtrl($scope, $http, $location, $rootScope) {
   $scope.schedule = [];
   $scope.employee = {};
   $scope.hours = [];
+  $scope.numhours = 0;
   $http.get('/home')
     .success(function(data) {
       $scope.employee = data.employee;
@@ -17,6 +18,13 @@ function homeCtrl($scope, $http, $location, $rootScope) {
       $scope.hours = data.hours;
       console.log($scope.payperiod);
       console.log($scope.hours);
+      for(var i=0;i<($scope.schedule).length;i++){
+        for(var j=0;j<($scope.hours).length;j++){
+          if((($scope.schedule[i]).day==($scope.hours[j]).day) && (($scope.schedule[i]).time==($scope.hours[j]).time)){
+            $scope.numhours++;
+          }
+        }
+      }
       //$scope.payearned = data.payearned;
     })
     .error(function(data) {
@@ -25,6 +33,7 @@ function homeCtrl($scope, $http, $location, $rootScope) {
   $scope.submitWorkHour = function() {
   $http.post('/home')
     .success(function(){
+
       console.log("successful button click");
   });
   }

@@ -41,7 +41,11 @@ function selectByDay(day, callback) {
  * args: err
  */
 function insert(eid, ipaddr, callback) {
-  connection.query('insert into HourLog values (current_date(), current_time(), ?, ?)', [eid, ipaddr], function(err) {
+  var d = new Date();
+  var h = d.getHours();
+  h = h + ':00:00';
+  console.log(h);
+  connection.query('insert into HourLog values (current_date(), ? , ?, ?)', [h, eid, ipaddr], function(err) {
     err ? callback(err) : callback(null);
   });
 }

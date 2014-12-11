@@ -42,9 +42,7 @@
 
 		Your Pay Earned: <br>
 		<ul>
-			<li ng-repeat="slot in payperiod">
-				time: {{slot.payperiod}}, hours: {{slot.hoursworked}},salary: {{slot.salary}}
-			</li>
+			hours worked: {{numhours}}, salary: {{payperiod[0].salary}} Pay earned: {{numhours*payperiod[0].salary}}
 		</ul>
 		</div>
 
