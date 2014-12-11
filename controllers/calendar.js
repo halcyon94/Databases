@@ -62,16 +62,16 @@ function updateHour(req, res, next) {
 }
 
 function deleteHour(req, res, next) {
-  var eid = parseInt(req.body.eid);
-  console.log(req.body.eid);
-  console.log(req.body.day);
-  console.log(req.body.time);
-  if (!req.body.hasOwnProperty('day') ||
-      !req.body.hasOwnProperty('time') || 
+  var eid = parseInt(req.params.eid);
+  console.log(req.params.eid);
+  console.log(req.params.day);
+  console.log(req.params.time);
+  if (!req.params.hasOwnProperty('day') ||
+      !req.params.hasOwnProperty('time') || 
       (eid !== 0 && !eid)) {
     return next(new Error('missing some fields'));
   }
-  Schedule.deleteSchedule(req.body.day,req.body.time, eid, function(err) {
+  Schedule.deleteSchedule(req.params.day,req.params.time, eid, function(err) {
     err ? next(err) : res.sendStatus(200);
   });
 }

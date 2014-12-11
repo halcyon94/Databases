@@ -1,8 +1,11 @@
-var hourserv = angular.module('services.hourserv', ['ngResource']);
+var Hourserv = angular.module('services.Hourserv', ['ngResource']);
 
-hourserv.factory('Hourserv', ['$resource', function($resource) {
-  return $resource('/calendar/:eid/:time/:day', null,
+Hourserv.factory('Hourserv', ['$resource', function($resource) {
+  return $resource('/calendar/:eid/:day/:time', 
+  	{eid:'@eid',
+  	day:'@day',
+  	time:'@time'},
   {
-    'delete': { method:'DELETE' }
+    delete: { method:'DELETE' }
   });
 }]);

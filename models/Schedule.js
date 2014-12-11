@@ -42,7 +42,7 @@ function update(day, time, eid, callback) {
 }
 
 function deleteSchedule(day,time, eid, callback) {
-  connection.query('DELETE FROM Schedule (day, time, eid) values (?, ?, ?);', [day, time, eid], function(err, result) {
+  connection.query('DELETE FROM Schedule WHERE day = ? AND time = ? AND eid = ?', [day, time, eid], function(err, result) {
     err ? callback(err) : callback(null,result.insertId);
   });
 }

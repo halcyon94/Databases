@@ -1,6 +1,6 @@
-var app = angular.module('controllers.calendar', [/*'services.Hourserv',*/'ui.calendar', 'ui.bootstrap']);
+var app = angular.module('controllers.calendar', ['services.Hourserv','ui.calendar', 'ui.bootstrap']);
 
-function calCtrl($scope,$compile,$http,uiCalendarConfig) {
+function calCtrl($scope,$compile,$http,Hourserv,uiCalendarConfig) {
     $scope.name = [];
     $scope.events = [];
     $scope.eventsF = function () {
@@ -79,8 +79,8 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
       
     };
     /* remove event */
-    $scope.remove = function() {
-      //$scope.events.splice(index,1);
+    $scope.remove = function(index) {
+      $scope.events.splice(index,1);
       var time = new Date($scope.year,$scope.month,$scope.day,$scope.hour);
       endhour2 = parseInt($scope.hour) +1;
       var endtime = new Date($scope.year,$scope.month,$scope.day,endhour2.toString());
@@ -89,17 +89,10 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
       console.log(($scope.hour).toString()+":00:00");
       console.log($scope.year+ "-"+($scope.month)+"-"+($scope.day+1));
 
-      $http.delete('/calendar', {
-        eid: $scope.eid,
-        time: ($scope.hour).toString()+":00:00",
-        day: $scope.year+ "-"+($scope.month)+"-"+($scope.day+1)
-      }).success(function() {
-        console.log("successful delete");
-        });
-     /*   Hourserv.delete({ 
+      Hourserv.delete({ 
           eid: $scope.eid,
           time: ($scope.hour).toString()+":00:00",
-          day: $scope.year+ "-"+($scope.month)+"-"+($scope.day+1)
+          day: $scope.year+ "-"+($scope.month)+"-"+($scope.day)
           },
           {},
           function(val, resHdr) { //success
@@ -110,7 +103,7 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
           console.log("error");
           //$notification.error('Delete Failed', msg);
           }
-        );*/
+        );
 
     };
     /* Change View */
@@ -148,4 +141,4 @@ function calCtrl($scope,$compile,$http,uiCalendarConfig) {
     $scope.eventSources = [$scope.eventsF, $scope.events];
 }
 
-app.controller("calCtrl", ["$scope", "$compile","$http","uiCalendarConfig", calCtrl]);
+app.controller("calCtrl", ["$scope", "$compile","$http","Hourserv","uiCalendarConfig", calCtrl]);

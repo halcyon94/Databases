@@ -33,8 +33,8 @@ module.exports = function(app) {
   var calCtrl = require('controllers/calendar');
   app.get('/calendar',calCtrl.getAllHours);
   app.post('/calendar', calCtrl.insertHour);
-  app.delete('/calendar', calCtrl.deleteHour);
-  app.put('/calendar/:eid/:time/:day', calCtrl.updateHour);
+  app.delete('/calendar/:eid/:day/:time', calCtrl.deleteHour);
+  app.put('/calendar', calCtrl.updateHour);
 
 
 

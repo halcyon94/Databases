@@ -1,5 +1,3 @@
-USE DATABASE `managementsystem`;
-
 CREATE TABLE if not exists `Employees` (
  `EID` int(10) auto_increment,
  `LastName` varchar(20) NOT NULL,
